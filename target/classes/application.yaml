@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: transaksi
+
+  profiles:
+    active: local   # default kalau jalan dari IDE
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver

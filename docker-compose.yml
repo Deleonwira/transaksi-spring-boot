@@ -1,0 +1,79 @@
+services:
+  app:
+    build: .
+    container_name: transaksi-app
+    depends_on:
+      - mysql
+      - db-init        # pastikan init selesai dulu
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+  # 🗃️ MySQL - Database Server
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+
+  db-init:
+    image: mysql:8.0
+    container_name: mysql-init
+    depends_on:
+      - mysql
+    # 💡 Tidak pakai -p di command line, pakai MYSQL_PWD
+    environment:
+      MYSQL_PWD: rootpassword
+    command: >
+      sh -c "
+        echo 'Waiting for MySQL...';
+        until mysqladmin ping -hmysql -uroot --silent; do
+          sleep 1;
+        done;
+        echo 'MySQL is up, running init script...';
+        mysql -hmysql -uroot mydb < /init/penjualan.sql;
+        echo 'Init done.';
+      "
+    volumes:
+      - ./db/penjualan.sql:/init/penjualan.sql
+    restart: "no"
+    networks:
+      - backend
+
+  # 🔧 phpMyAdmin - Database Management Tool
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    ports:
+      - "8081:80"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
