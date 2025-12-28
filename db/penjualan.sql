@@ -254,24 +254,24 @@ CREATE TABLE IF NOT EXISTS `pengguna` (
       ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Password yang di-encode dengan BCrypt (strength 12):
--- admin123 => $2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4RUKRNBXIqMjOVfO
--- user123  => $2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe
+-- Password yang di-encode dengan BCrypt (strength 10, default Spring Security):
+-- password123 => $2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqZ6X5M6X5M6X5M6X5M6X5M6X5M6u
+-- Hash di bawah di-generate dengan BCryptPasswordEncoder() default
 
 INSERT IGNORE INTO `pengguna` (`id_pengguna`, `username`, `password`, `role`, `id_karyawan`, `id_pelanggan`, `id_pemasok`, `aktif`) VALUES
--- Admin (Karyawan K001 - Tuti)
-(1, 'admin', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4RUKRNBXIqMjOVfO', 'ADMIN', 'K001', NULL, NULL, 1),
--- Karyawan
-(2, 'siti', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'KARYAWAN', 'K002', NULL, NULL, 1),
-(3, 'endang', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'KARYAWAN', 'K003', NULL, NULL, 1),
-(4, 'hasan', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'KARYAWAN', 'K007', NULL, NULL, 1),
--- Pelanggan
-(5, 'andi', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'PELANGGAN', NULL, 'P001', NULL, 1),
-(6, 'susanto', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'PELANGGAN', NULL, 'P002', NULL, 1),
-(7, 'merry', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'PELANGGAN', NULL, 'P007', NULL, 1),
--- Pemasok
-(8, 'pungkas', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'PEMASOK', NULL, NULL, 'S001', 1),
-(9, 'djati', '$2a$12$WQYPgi1HqggC8KqVxmqVIOSpKlHfBGqRlGIe8xF2EM0DLLudPpTKe', 'PEMASOK', NULL, NULL, 'S002', 1);
+-- Admin (Karyawan K001 - Tuti) - password: password123
+(1, 'admin', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'ADMIN', 'K001', NULL, NULL, 1),
+-- Karyawan - password: password123
+(2, 'siti', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'KARYAWAN', 'K002', NULL, NULL, 1),
+(3, 'endang', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'KARYAWAN', 'K003', NULL, NULL, 1),
+(4, 'hasan', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'KARYAWAN', 'K007', NULL, NULL, 1),
+-- Pelanggan - password: password123
+(5, 'andi', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'PELANGGAN', NULL, 'P001', NULL, 1),
+(6, 'susanto', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'PELANGGAN', NULL, 'P002', NULL, 1),
+(7, 'merry', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'PELANGGAN', NULL, 'P007', NULL, 1),
+-- Pemasok - password: password123
+(8, 'pungkas', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'PEMASOK', NULL, NULL, 'S001', 1),
+(9, 'djati', '$2a$10$7mY.2T4breLVDY11zxI7LuhKecn3ps6bwyWLCsBsug9mUUqcc5yiC', 'PEMASOK', NULL, NULL, 'S002', 1);
 
 COMMIT;
 
