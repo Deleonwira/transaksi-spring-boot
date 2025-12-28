@@ -1,14 +1,30 @@
 services:
+  # 🌐 Nginx - Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - backend
+
+  # ☕ Spring Boot Application
   app:
     build: .
     container_name: transaksi-app
+    restart: unless-stopped
     depends_on:
       - mysql
-      - db-init        # pastikan init selesai dulu
+      - db-init
     environment:
       SPRING_PROFILES_ACTIVE: docker
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     networks:
       - backend
 
@@ -19,7 +35,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: penjualan
       MYSQL_USER: myuser
       MYSQL_PASSWORD: mypassword
     volumes:
@@ -29,12 +45,12 @@ services:
     networks:
       - backend
 
+  # 🔧 Database Initialization
   db-init:
     image: mysql:8.0
     container_name: mysql-init
     depends_on:
       - mysql
-    # 💡 Tidak pakai -p di command line, pakai MYSQL_PWD
     environment:
       MYSQL_PWD: rootpassword
     command: >
@@ -44,7 +60,7 @@ services:
           sleep 1;
         done;
         echo 'MySQL is up, running init script...';
-        mysql -hmysql -uroot mydb < /init/penjualan.sql;
+        mysql -hmysql -uroot penjualan < /init/penjualan.sql;
         echo 'Init done.';
       "
     volumes:
@@ -77,3 +93,4 @@ networks:
 volumes:
   mysql-data:
     driver: local
+

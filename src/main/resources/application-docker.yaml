@@ -4,7 +4,7 @@ spring:
       on-profile: docker
 
   datasource:
-    url: jdbc:mysql://mysql:3306/mydb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Jakarta
+    url: jdbc:mysql://mysql:3306/penjualan?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Jakarta
     username: myuser
     password: mypassword
 
